@@ -42,10 +42,19 @@ function operate(operator, num1, num2) {
     }
 }
 
+function calcInput(e) {
+    calculatorInput.push(e.target.textContent);
+}
+
+function calcDisplay() {
+    calculatorDisplay.innerHTML = calculatorInput.join('');
+}
+
+
 numbers.forEach(number => {
     number.addEventListener('click', e => {
-        calculatorInput.push(e.target.textContent);
-        calculatorDisplay.innerHTML = calculatorInput.join('');
+        calcInput(e);
+        calcDisplay();
     }); 
 });
 
@@ -53,8 +62,8 @@ decimalBtn.addEventListener('click', displayDecimal);
 decimalBtn.addEventListener('click', checkIfDecimal);
 
 function displayDecimal(e) {
-    calculatorInput.push(e.target.textContent);
-    calculatorDisplay.innerHTML = calculatorInput.join('');
+    calcInput(e);
+    calcDisplay();
 }
 
 function checkIfDecimal(e) {
@@ -63,17 +72,10 @@ function checkIfDecimal(e) {
     }
 
     if (!calculatorDisplay.innerHTML.includes('.')) {
-        calculatorInput.push(e.target.textContent);
-        calculatorDisplay.innerHTML = calculatorInput.join('');
+        displayDecimal(e);
     }
 }
 
-clearBtn.addEventListener('click', () => {
-    calculatorInput = [];
-    inputs = [];
-    operatorValue.shift();
-    calculatorDisplay.innerHTML = calculatorInput;
-});
 
 operatorBtn.forEach(operator => {
     operator.addEventListener('click', () => {
@@ -92,10 +94,15 @@ operatorBtn.forEach(operator => {
         operatorValue.shift();
         calculatorInput = [];
     }
-       
     });
 })
 
+clearBtn.addEventListener('click', () => {
+    calculatorInput = [];
+    inputs = [];
+    operatorValue.shift();
+    calcDisplay();
+});
 
 equalBtn.addEventListener('click', () => {
     joinNum = calculatorInput.join('');
